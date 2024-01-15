@@ -18,6 +18,9 @@ return {
 				"stylua", -- lua formatter
 				"black", -- python formatter
 				"pylint", -- python linter
+				"mypy", -- python type checker
+				"ruff",
+				"debugpy", -- python debugger
 			},
 		})
 
@@ -43,6 +46,8 @@ return {
 				formatting.isort,
 				formatting.black,
 				diagnostics.pylint,
+				diagnostics.mypy,
+				diagnostics.ruff,
 			},
 
 			-- configure format on save
