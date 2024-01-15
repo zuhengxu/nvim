@@ -27,10 +27,10 @@ return {
 
 			-- Set up an autocmd event to apply the key mapping for markdown files
 			vim.cmd([[
-              autocmd FileType markdown nnoremap <buffer> <leader>ll :MarkdownPreview<CR>
-              autocmd FileType markdown nnoremap <buffer> <leader>lc :MarkdownPreviewStep<CR>
-              autocmd FileType markdown nnoremap <buffer> <leader>lt :MarkdownPreviewToggle<CR>
-            ]])
+		      autocmd FileType markdown nnoremap <buffer> <leader>ll :MarkdownPreview<CR>
+		      autocmd FileType markdown nnoremap <buffer> <leader>lc :MarkdownPreviewStep<CR>
+		      autocmd FileType markdown nnoremap <buffer> <leader>lt :MarkdownPreviewToggle<CR>
+			    ]])
 		end,
 	},
 }
