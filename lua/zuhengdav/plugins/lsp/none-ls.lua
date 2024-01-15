@@ -17,9 +17,9 @@ return {
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
 				"black", -- python formatter
-				"pylint", -- python linter
+				-- "pylint", -- python linter
 				"mypy", -- python type checker
-				"ruff",
+				"ruff", -- python linter
 				"debugpy", -- python debugger
 			},
 		})
@@ -45,7 +45,7 @@ return {
 				formatting.stylua, -- lua formatter
 				formatting.isort,
 				formatting.black,
-				diagnostics.pylint,
+				-- diagnostics.pylint,
 				diagnostics.mypy,
 				diagnostics.ruff,
 			},
