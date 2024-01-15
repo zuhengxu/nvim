@@ -1,3 +1,8 @@
 return {
-	"JuliaEditorSupport/julia-vim",
+	{
+		"JuliaEditorSupport/julia-vim",
+	},
+	{
+		"andreypopp/julia-repl-vim",
+	},
 }
