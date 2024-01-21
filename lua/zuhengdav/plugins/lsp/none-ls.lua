@@ -21,6 +21,7 @@ return {
 				"mypy", -- python type checker
 				"ruff", -- python linter
 				"debugpy", -- python debugger
+				"julials", -- julia lsp
 			},
 		})
 
@@ -48,6 +49,7 @@ return {
 				-- diagnostics.pylint,
 				diagnostics.mypy,
 				diagnostics.ruff,
+				diagnostics.julials,
 			},
 
 			-- configure format on save
