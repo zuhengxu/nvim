@@ -95,9 +95,7 @@ return {
 			on_attach = on_attach,
 			settings = {
 				ltex = {
-					dictionary = {
-						["en-US"] = words,
-					},
+					language = "en",
 				},
 			},
 			-- filetypes = { "tex", "markdown" },
@@ -123,7 +121,7 @@ return {
 					-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
 					-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
 					-- You should see "Hello!" appear. This line can then safely be removed.
-					vim.notify("using julials!")
+					-- vim.notify("using julials!")
 					new_config.cmd[1] = julia
 				end
 			end,
