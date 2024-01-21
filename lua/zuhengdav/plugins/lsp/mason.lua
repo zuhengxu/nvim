@@ -36,6 +36,13 @@ return {
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
 			--
+			-- handlers = {
+			-- 	function(server_name) --default handler
+			-- 		print("setting up ", server_name)
+			-- 		require("lspconfig")[server_name].setup({})
+			-- 	end,
+			-- },
+
 			-- --  If you want to override the default filetypes that your language server will attach to you can
 			-- --  define the property 'filetypes' to the map in question.
 			local_servers = {

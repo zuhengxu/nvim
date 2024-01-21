@@ -44,7 +44,7 @@ return {
 			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
 			opts.desc = "Show line diagnostics"
-			keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+			keymap.set("n", "<leader>df", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 			opts.desc = "Go to previous diagnostic"
 			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
@@ -85,24 +85,38 @@ return {
 
 		--configure latex server
 		--create a Lua function that loops all the words in the spell file and creates a table of words from it.
-		local words = {}
-		for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
-			table.insert(words, word)
-		end
+		-- local words = {}
+		-- for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
+		-- 	table.insert(words, word)
+		-- end
 
 		lspconfig["ltex"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
 				ltex = {
-					language = "en",
+					language = "en-US",
 				},
 			},
 			-- filetypes = { "tex", "markdown" },
 		})
+
 		lspconfig["texlab"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+			settings = {
+				texlab = {
+					bibtexFormatter = "texlab",
+					chktex = {
+						onEdit = false,
+						onOpenAndSave = false,
+					},
+					latexFormatter = "latexindent",
+					latexindent = {
+						modifyLineBreaks = false,
+					},
+				},
+			},
 			-- filetypes = { "tex" },
 		})
 

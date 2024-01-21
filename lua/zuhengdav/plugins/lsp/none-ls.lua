@@ -23,6 +23,8 @@ return {
 				"debugpy", -- python debugger
 				"julials", -- julia lsp
 				-- "ltex", -- latex lsp
+				"texlab",
+				-- "latexindent", -- latex formatter
 			},
 		})
 
@@ -47,6 +49,7 @@ return {
 				formatting.stylua, -- lua formatter
 				formatting.isort,
 				formatting.black,
+				-- formatting.latexindent, -- latex formatter
 				-- diagnostics.pylint,
 				diagnostics.mypy,
 				diagnostics.ruff,
