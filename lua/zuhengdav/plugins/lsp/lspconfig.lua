@@ -60,7 +60,7 @@ return {
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
@@ -81,6 +81,31 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "python" },
+		})
+
+		--configure latex server
+		--create a Lua function that loops all the words in the spell file and creates a table of words from it.
+		local words = {}
+		for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
+			table.insert(words, word)
+		end
+
+		lspconfig["ltex"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				ltex = {
+					dictionary = {
+						["en-US"] = words,
+					},
+				},
+			},
+			-- filetypes = { "tex", "markdown" },
+		})
+		lspconfig["texlab"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			-- filetypes = { "tex" },
 		})
 
 		-- configure julia language	server
