@@ -53,7 +53,6 @@ return {
 				-- diagnostics.pylint,
 				diagnostics.mypy,
 				diagnostics.ruff,
-				diagnostics.ltex,
 			},
 
 			-- configure format on save
