@@ -28,7 +28,7 @@ return {
 
 			-- set keybinds
 			opts.desc = "Show LSP references"
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+			keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
 			opts.desc = "Go to declaration"
 			keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
@@ -94,10 +94,10 @@ return {
 		--  define the property 'filetypes' to the map in question.
 
 		--create a Lua function that loops all the words in the spell file and creates a table of words from it.
-		local words = {}
-		for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
-			table.insert(words, word)
-		end
+		-- local words = {}
+		-- for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
+		-- 	table.insert(words, word)
+		-- end
 
 		local servers = {
 			html = {},
@@ -108,9 +108,9 @@ return {
 			-- tsserver = {},
 			-- html = { filetypes = { 'html', 'twig', 'hbs'} },
 			ltex = {
-				dictionary = {
-					["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
-				},
+				-- dictionary = {
+				-- 	["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
+				-- },
 				language = "en-US",
 			},
 
