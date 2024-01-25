@@ -1,6 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
+	event = { "BufReadPre", "BufNewFile", "BufReadPost" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
@@ -15,8 +15,16 @@ return {
 		local keymap = vim.keymap -- for conciseness
 
 		local opts = { noremap = true, silent = true }
-		local on_attach = function(client, bufnr)
+		local on_attach = function(_, bufnr)
 			opts.buffer = bufnr
+
+			local nmap = function(keys, func, desc)
+				if desc then
+					desc = "LSP: " .. desc
+				end
+
+				vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+			end
 
 			-- set keybinds
 			opts.desc = "Show LSP references"
@@ -57,10 +65,11 @@ return {
 
 			opts.desc = "Restart LSP"
 			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-		end
 
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+			nmap("<leader>wl", function()
+				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+			end, "[W]orkspace [L]ist Folders")
+		end
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
@@ -70,41 +79,41 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		-- configure html server
-		lspconfig["html"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		-- used to enable autocompletion (assign to every lsp server config)
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+		-- local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-		-- configure python server
-		lspconfig["pyright"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "python" },
-		})
+		-- Enable the following language servers
+		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+		--
+		--  Add any additional override configuration in the following tables. They will be passed to
+		--  the `settings` field of the server config. You must look up that documentation yourself.
+		--
+		--  If you want to override the default filetypes that your language server will attach to you can
+		--  define the property 'filetypes' to the map in question.
 
-		--configure latex server
 		--create a Lua function that loops all the words in the spell file and creates a table of words from it.
-		-- local words = {}
-		-- for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
-		-- 	table.insert(words, word)
-		-- end
+		local words = {}
+		for word in io.open(vim.fn.stdpath("config") .. "/spell/en.utf-8.add", "r"):lines() do
+			table.insert(words, word)
+		end
 
-		lspconfig["ltex"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				ltex = {
-					language = "en-US",
+		local servers = {
+			html = {},
+			-- gopls = {},
+			pyright = { filetypes = { "python" } },
+
+			-- rust_analyzer = {},
+			-- tsserver = {},
+			-- html = { filetypes = { 'html', 'twig', 'hbs'} },
+			ltex = {
+				dictionary = {
+					["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
 				},
 			},
-			-- filetypes = { "tex", "markdown" },
-		})
 
-		lspconfig["texlab"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
+			texlab = {
 				texlab = {
 					bibtexFormatter = "texlab",
 					chktex = {
@@ -117,8 +126,86 @@ return {
 					},
 				},
 			},
-			-- filetypes = { "tex" },
+
+			lua_ls = {
+				Lua = {
+					-- make the language server recognize "vim" global
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						-- make language server aware of runtime files
+						library = {
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
+						},
+					},
+				},
+			},
+		}
+
+		-- Ensure the servers above are installed
+		local mason_lspconfig = require("mason-lspconfig")
+
+		mason_lspconfig.setup({
+			ensure_installed = vim.tbl_keys(servers),
 		})
+
+		mason_lspconfig.setup_handlers({
+			function(server_name)
+				require("lspconfig")[server_name].setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = servers[server_name],
+					filetypes = (servers[server_name] or {}).filetypes,
+				})
+			end,
+		})
+		-- -- configure html server
+		-- lspconfig["html"].setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- })
+
+		-- -- configure python server
+		-- lspconfig["pyright"].setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- 	filetypes = { "python" },
+		-- })
+
+		--configure latex server
+
+		-- lspconfig["ltex"].setup({
+		-- 	-- capabilities = capabilities,
+		-- 	-- on_attach = on_attach,
+		-- 	handlers = handlers,
+		-- 	settings = {
+		-- 		ltex = {
+		-- 			language = "en-US",
+		-- 		},
+		-- 	},
+		-- 	-- filetypes = { "tex", "markdown" },
+		-- })
+
+		-- lspconfig["texlab"].setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- 	settings = {
+		-- 		texlab = {
+		-- 			bibtexFormatter = "texlab",
+		-- 			chktex = {
+		-- 				onEdit = false,
+		-- 				onOpenAndSave = false,
+		-- 			},
+		-- 			latexFormatter = "latexindent",
+		-- 			latexindent = {
+		-- 				modifyLineBreaks = false,
+		-- 			},
+		-- 		},
+		-- 	},
+		-- 	-- filetypes = { "tex" },
+		-- })
 
 		-- configure julia language	server
 		local REVISE_LANGUAGESERVER = false
@@ -154,26 +241,26 @@ return {
 			capabilities = capabilities,
 			filetypes = { "julia" },
 		})
-
-		-- configure lua server (with special settings)
-		lspconfig["lua_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = { -- custom settings for lua
-				Lua = {
-					-- make the language server recognize "vim" global
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						-- make language server aware of runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
-						},
-					},
-				},
-			},
-		})
+		--
+		-- -- configure lua server (with special settings)
+		-- lspconfig["lua_ls"].setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- 	settings = { -- custom settings for lua
+		-- 		Lua = {
+		-- 			-- make the language server recognize "vim" global
+		-- 			diagnostics = {
+		-- 				globals = { "vim" },
+		-- 			},
+		-- 			workspace = {
+		-- 				-- make language server aware of runtime files
+		-- 				library = {
+		-- 					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+		-- 					[vim.fn.stdpath("config") .. "/lua"] = true,
+		-- 				},
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
 	end,
 }

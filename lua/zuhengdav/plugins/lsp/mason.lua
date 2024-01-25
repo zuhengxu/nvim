@@ -35,27 +35,6 @@ return {
 			},
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
-			--
-			-- handlers = {
-			-- 	function(server_name) --default handler
-			-- 		print("setting up ", server_name)
-			-- 		require("lspconfig")[server_name].setup({})
-			-- 	end,
-			-- },
-
-			-- --  If you want to override the default filetypes that your language server will attach to you can
-			-- --  define the property 'filetypes' to the map in question.
-			local_servers = {
-				julials = {
-					-- This just adds dirname(fname) as a fallback (see nvim-lspconfig#1768).
-					root_dir = function(fname)
-						local util = require("lspconfig.util")
-						return util.root_pattern("Project.toml")(fname)
-							or util.find_git_ancestor(fname)
-							or util.path.dirname(fname)
-					end,
-				},
-			},
 		})
 
 		mason_tool_installer.setup({

@@ -22,7 +22,7 @@ return {
 				"ruff", -- python linter
 				"debugpy", -- python debugger
 				"julials", -- julia lsp
-				-- "ltex", -- latex lsp
+				"ltex", -- latex lsp
 				"texlab",
 				-- "latexindent", -- latex formatter
 			},
@@ -53,6 +53,7 @@ return {
 				-- diagnostics.pylint,
 				diagnostics.mypy,
 				diagnostics.ruff,
+				diagnostics.ltex,
 			},
 
 			-- configure format on save
