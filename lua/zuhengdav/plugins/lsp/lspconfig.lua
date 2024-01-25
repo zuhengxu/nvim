@@ -111,6 +111,7 @@ return {
 				dictionary = {
 					["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
 				},
+				language = "en-US",
 			},
 
 			texlab = {
