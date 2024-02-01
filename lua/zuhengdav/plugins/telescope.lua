@@ -38,6 +38,8 @@ return {
 			})
 			require("telescope").load_extension("ui-select")
 
+			require("telescope").load_extension("noice")
+
 			-- Load fzf native extension, if available
 			pcall(require("telescope").load_extension, "fzf")
 
