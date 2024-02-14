@@ -7,7 +7,7 @@ return {
 	config = function()
 		vim.g.slime_target = "tmux"
 		-- vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
-		vim.g.slime_default_config = { socket_name = "default", target_pane = "{top-right}" }
+		vim.g.slime_default_config = { socket_name = "default", target_pane = "{bottom-right}" }
 
 		-- vim.g.slime_default_config = {
 		-- 	-- Lua doesn't have a string split function!

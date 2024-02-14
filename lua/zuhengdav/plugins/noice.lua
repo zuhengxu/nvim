@@ -61,6 +61,16 @@ return {
 				view_history = "messages", -- view for :messages
 				view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
 			},
+			routes = {
+				{
+					filter = {
+						event = "msg_show",
+						kind = "",
+						find = "written",
+					},
+					opts = { skip = true },
+				},
+			},
 		})
 	end,
 }
