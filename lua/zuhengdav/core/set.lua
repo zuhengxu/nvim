@@ -56,7 +56,7 @@ vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 vim.o.completeopt = "menuone,noselect"
 
 -- set latex word wrap
-vim.cmd([[autocmd FileType tex setlocal textwidth=80 wrap]])
+-- vim.cmd([[autocmd FileType tex setlocal textwidth=80 wrap]])
 
 -- define the spell file location
 vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
