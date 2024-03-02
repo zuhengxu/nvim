@@ -100,17 +100,27 @@ return {
 		-- end
 
 		local servers = {
-			html = {},
+			html = {
+				format = {
+					templating = true,
+					wrapLineLength = 120, --disable line wrapping
+					wrapAttributes = "auto",
+				},
+				hover = {
+					documentation = true,
+					references = true,
+				},
+			},
 			-- gopls = {},
 			pyright = { filetypes = { "python" } },
 
 			-- rust_analyzer = {},
 			-- tsserver = {},
-			-- html = { filetypes = { 'html', 'twig', 'hbs'} },
 			ltex = {
 				-- dictionary = {
 				-- 	["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
 				-- },
+				filetypes = { "tex", "markdown" },
 				language = "en-US",
 			},
 

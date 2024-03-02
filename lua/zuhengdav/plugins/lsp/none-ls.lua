@@ -24,6 +24,7 @@ return {
 				"julials", -- julia lsp
 				"ltex", -- latex lsp
 				"texlab",
+				"html",
 				-- "latexindent", -- latex formatter
 			},
 		})
@@ -45,6 +46,7 @@ return {
 				--  "formatting.prettier.with({disabled_filetypes: {}})" (see null-ls docs)
 				formatting.prettier.with({
 					extra_filetypes = { "svelte" },
+					disabled_filetypes = { "html" },
 				}), -- js/ts formatter
 				formatting.stylua, -- lua formatter
 				formatting.isort,
@@ -52,7 +54,6 @@ return {
 				-- formatting.latexindent, -- latex formatter
 				-- diagnostics.pylint,
 				diagnostics.mypy,
-				-- diagnostics.ruff,
 			},
 
 			-- configure format on save
