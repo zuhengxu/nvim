@@ -32,6 +32,22 @@ vim.wo.number = true
 -- Enable mouse mode
 vim.o.mouse = "a"
 
+-- set clipboard to system clipboard
+vim.cmd([[
+let g:clipboard = {
+      \   'name': 'myClipboard',
+      \   'copy': {
+      \      '+': ['tmux', 'load-buffer', '-'],
+      \      '*': ['tmux', 'load-buffer', '-'],
+      \    },
+      \   'paste': {
+      \      '+': ['tmux', 'save-buffer', '-'],
+      \      '*': ['tmux', 'save-buffer', '-'],
+      \   },
+      \   'cache_enabled': 1,
+      \ }
+]])
+
 -- Enable break indent
 vim.o.breakindent = true
 
