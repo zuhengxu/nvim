@@ -24,7 +24,7 @@ return {
 			-- Define dap mappings here
 			vim.api.nvim_set_keymap(
 				"n",
-				"<leader>bg",
+				"<leader>db",
 				"<cmd>DapToggleBreakpoint<CR>",
 				{ noremap = true, silent = true }
 			)
@@ -44,7 +44,7 @@ return {
 			-- Define dap-python mappings here
 			vim.api.nvim_set_keymap(
 				"n",
-				"<leader>bgr",
+				"<leader>dpr", -- debug python run
 				'<cmd>lua require("dap-python").test_method()<CR>',
 				{ noremap = true, silent = true }
 			)
