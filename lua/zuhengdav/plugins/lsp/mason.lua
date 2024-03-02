@@ -44,7 +44,7 @@ return {
 				"isort", -- python formatter
 				"black", -- python formatter
 				"mypy", -- python linter
-				"ruff", -- python linter
+				"ruff-lsp", -- python linter: lsp implementation of ruff
 				-- "pylint", -- python linter
 			},
 		})

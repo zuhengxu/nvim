@@ -19,7 +19,7 @@ return {
 				"black", -- python formatter
 				-- "pylint", -- python linter
 				"mypy", -- python type checker
-				"ruff", -- python linter
+				"ruff-lsp", -- python linter
 				"debugpy", -- python debugger
 				"julials", -- julia lsp
 				"ltex", -- latex lsp
@@ -52,7 +52,7 @@ return {
 				-- formatting.latexindent, -- latex formatter
 				-- diagnostics.pylint,
 				diagnostics.mypy,
-				diagnostics.ruff,
+				-- diagnostics.ruff,
 			},
 
 			-- configure format on save
