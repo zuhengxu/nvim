@@ -1,5 +1,6 @@
 return {
 	"jpalardy/vim-slime",
+	commit = "87988b173b7642e6a5124f9e5559148c4159d076",
 	ft = { "julia", "python", "r" },
 	-- init = function()
 	-- 	vim.g.slime_no_mappings = 1 -- disable default mappings
