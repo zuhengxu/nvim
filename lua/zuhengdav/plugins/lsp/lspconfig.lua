@@ -100,26 +100,11 @@ return {
 		-- end
 
 		local servers = {
-			html = {
-				format = {
-					templating = true,
-					wrapLineLength = 120, --disable line wrapping
-					wrapAttributes = "auto",
-				},
-				hover = {
-					documentation = true,
-					references = true,
-				},
-			},
 			-- gopls = {},
 			pyright = { filetypes = { "python" } },
+			taplo = {},
 
-			-- rust_analyzer = {},
-			-- tsserver = {},
 			ltex = {
-				-- dictionary = {
-				-- 	["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
-				-- },
 				filetypes = { "tex", "markdown" },
 				language = "en-US",
 			},
@@ -172,106 +157,5 @@ return {
 				})
 			end,
 		})
-		-- -- configure html server
-		-- lspconfig["html"].setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- })
-
-		-- -- configure python server
-		-- lspconfig["pyright"].setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- 	filetypes = { "python" },
-		-- })
-
-		--configure latex server
-
-		-- lspconfig["ltex"].setup({
-		-- 	-- capabilities = capabilities,
-		-- 	-- on_attach = on_attach,
-		-- 	handlers = handlers,
-		-- 	settings = {
-		-- 		ltex = {
-		-- 			language = "en-US",
-		-- 		},
-		-- 	},
-		-- 	-- filetypes = { "tex", "markdown" },
-		-- })
-
-		-- lspconfig["texlab"].setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- 	settings = {
-		-- 		texlab = {
-		-- 			bibtexFormatter = "texlab",
-		-- 			chktex = {
-		-- 				onEdit = false,
-		-- 				onOpenAndSave = false,
-		-- 			},
-		-- 			latexFormatter = "latexindent",
-		-- 			latexindent = {
-		-- 				modifyLineBreaks = false,
-		-- 			},
-		-- 		},
-		-- 	},
-		-- 	-- filetypes = { "tex" },
-		-- })
-
-		-- configure julia language	server
-		local REVISE_LANGUAGESERVER = false
-
-		lspconfig["julials"].setup({
-			on_new_config = function(new_config, _)
-				local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
-				if REVISE_LANGUAGESERVER then
-					new_config.cmd[5] = (new_config.cmd[5]):gsub(
-						"using LanguageServer",
-						"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
-					)
-				elseif require("lspconfig").util.path.is_file(julia) then
-					-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
-					-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
-					-- You should see "Hello!" appear. This line can then safely be removed.
-					-- vim.notify("using julials!")
-					new_config.cmd[1] = julia
-				end
-			end,
-			-- This just adds dirname(fname) as a fallback (see nvim-lspconfig#1768).
-			root_dir = function(fname)
-				local util = require("lspconfig.util")
-				return util.root_pattern("Project.toml")(fname)
-					or util.find_git_ancestor(fname)
-					or util.path.dirname(fname)
-			end,
-			on_attach = function(client, bufnr)
-				on_attach(client, bufnr)
-				-- Disable automatic formatexpr since the LS.jl formatter isn't so nice.
-				vim.bo[bufnr].formatexpr = ""
-			end,
-			capabilities = capabilities,
-			filetypes = { "julia" },
-		})
-		--
-		-- -- configure lua server (with special settings)
-		-- lspconfig["lua_ls"].setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- 	settings = { -- custom settings for lua
-		-- 		Lua = {
-		-- 			-- make the language server recognize "vim" global
-		-- 			diagnostics = {
-		-- 				globals = { "vim" },
-		-- 			},
-		-- 			workspace = {
-		-- 				-- make language server aware of runtime files
-		-- 				library = {
-		-- 					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-		-- 					[vim.fn.stdpath("config") .. "/lua"] = true,
-		-- 				},
-		-- 			},
-		-- 		},
-		-- 	},
-		-- })
 	end,
 }

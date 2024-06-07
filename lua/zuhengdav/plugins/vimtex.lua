@@ -1,9 +1,11 @@
 return {
 	"lervag/vimtex",
 	config = function()
-		vim.g.vimtex_view_method = "zathura"
-		vim.g.vimtex_view_general_viewer = "zathura"
-		vim.g.vimtex_compiler_progname = "latexmk"
+		vim.g.vimtex_view_method = "skim"
+		vim.g.vimtex_view_general_viewer = "skim"
+		vim.g.vimtex_view_skim_sync = 1
+		vim.g.vimtex_view_skim_activate = 1
+		-- vim.g.vimtex_compiler_method = "latexrun"
 		-- vim.g.maplocalleader = " " --configured localleader in set.lua
 	end,
 }

@@ -21,11 +21,9 @@ return {
 				"mypy", -- python type checker
 				"ruff-lsp", -- python linter
 				"debugpy", -- python debugger
-				"julials", -- julia lsp
+				"taplo",
 				"ltex", -- latex lsp
 				"texlab",
-				"html",
-				-- "latexindent", -- latex formatter
 			},
 		})
 
@@ -57,27 +55,28 @@ return {
 			},
 
 			-- configure format on save
-			on_attach = function(current_client, bufnr)
-				if current_client.supports_method("textDocument/formatting") then
-					vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = augroup,
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.buf.format({
-								filter = function(client)
-									--  only use null-ls for formatting instead of lsp server
-									return client.name == "null-ls"
-								end,
-								bufnr = bufnr,
-							})
-						end,
-					})
-				end
-			end,
+			-- on_attach = function(current_client, bufnr)
+			-- 	if current_client.supports_method("textDocument/formatting") then
+			-- 		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+			-- 		vim.api.nvim_create_autocmd("BufWritePre", {
+			-- 			group = augroup,
+			-- 			buffer = bufnr,
+			-- 			callback = function()
+			-- 				vim.lsp.buf.format({
+			-- 					filter = function(client)
+			-- 						--  only use null-ls for formatting instead of lsp server
+			-- 						return client.name == "null-ls"
+			-- 					end,
+			-- 					bufnr = bufnr,
+			-- 				})
+			-- 			end,
+			-- 		})
+			-- 	end
+			-- end,
 		})
 
 		-- keymap for trigger formatting
 		vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
+		vim.keymap.set("v", "<leader>ff", vim.lsp.buf.format, {})
 	end,
 }

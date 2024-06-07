@@ -11,7 +11,7 @@ return {
 				local config = require("nvim-treesitter.configs")
 				config.setup({
 					-- Add languages to be installed here that you want installed for treesitter
-					ensure_installed = { "lua", "python", "vimdoc", "vim", "bash", "julia" },
+					ensure_installed = { "lua", "python", "vimdoc", "vim", "bash" },
 
 					-- Autoinstall languages that are not installed
 					auto_install = true,
