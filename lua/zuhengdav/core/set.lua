@@ -81,7 +81,7 @@ vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 vim.cmd([[let g:vimtex_quickfix_mode=0]])
 
 -- settings for Julia
-vim.cmd([[au FileType julia setlocal colorcolumn=93]]) --Highlights column 93 to help maintain the 92 character line limit.
+vim.cmd([[autocmd FileType julia setlocal colorcolumn=93]]) --Highlights column 93 to help maintain the 92 character line limit.
 
 -- reduce notications from ltex-ls while preserving noice lsp_progress implementation
 -- see bottom of https://github.com/folke/noice.nvim/wiki/A-Guide-to-Messages
