@@ -8,9 +8,6 @@ return {
 		end,
 	},
 	{
-		"andreypopp/julia-repl-vim",
-	},
-	{
 		--formatter
 		"kdheepak/JuliaFormatter.vim",
 		lazy = false,
@@ -19,14 +16,14 @@ return {
 			-- Normal mode mapping
 			vim.api.nvim_set_keymap(
 				"n",
-				"<localleader>ff",
+				"<localleader>fj",
 				":JuliaFormatterFormat<CR>",
 				{ noremap = true, silent = true }
 			)
 			-- Visual mode mapping
 			vim.api.nvim_set_keymap(
 				"v",
-				"<localleader>ff",
+				"<localleader>fj",
 				":JuliaFormatterFormat<CR>",
 				{ noremap = true, silent = true }
 			)

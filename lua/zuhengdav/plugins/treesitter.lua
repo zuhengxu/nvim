@@ -11,7 +11,17 @@ return {
 				local config = require("nvim-treesitter.configs")
 				config.setup({
 					-- Add languages to be installed here that you want installed for treesitter
-					ensure_installed = { "lua", "python", "vimdoc", "vim", "bash", "julia" },
+					ensure_installed = {
+						"lua",
+						"python",
+						"vimdoc",
+						"vim",
+						"bash",
+						"julia",
+						"regex",
+						"markdown_inline",
+						"markdown",
+					},
 
 					-- Autoinstall languages that are not installed
 					auto_install = true,
@@ -23,15 +33,15 @@ return {
 					highlight = { enable = true },
 					indent = { enable = true },
 
-					incremental_selection = {
-						enable = true,
-						keymaps = {
-							init_selection = "<c-space>",
-							node_incremental = "<c-space>",
-							scope_incremental = "<c-s>",
-							node_decremental = "<M-space>",
-						},
-					},
+					-- incremental_selection = {
+					-- 	enable = true,
+					-- 	keymaps = {
+					-- 		init_selection = "<c-space>",
+					-- 		node_incremental = "<c-space>",
+					-- 		scope_incremental = "<c-s>",
+					-- 		node_decremental = "<M-space>",
+					-- 	},
+					-- },
 
 					textobjects = {
 						select = {
