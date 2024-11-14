@@ -19,7 +19,7 @@ return {
 				"black", -- python formatter
 				-- "pylint", -- python linter
 				"mypy", -- python type checker
-				"ruff-lsp", -- python linter
+				"ruff", -- python linter
 				"debugpy", -- python debugger
 				"julials", -- julia lsp
 				"ltex", -- latex lsp
