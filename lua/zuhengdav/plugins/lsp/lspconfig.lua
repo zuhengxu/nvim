@@ -181,8 +181,6 @@ return {
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				-- gopls = {},
-				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
@@ -204,7 +202,6 @@ return {
 						references = true,
 					},
 				},
-				-- gopls = {},
 				pyright = { filetypes = { "python" } },
 
 				-- rust_analyzer = {},
@@ -291,7 +288,7 @@ return {
 							"using LanguageServer",
 							"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
 						)
-					elseif require("lspconfig").util.path.is_file(julia) then
+					elseif (vim.loop.fs_stat(julia) or {}).type == 'file' then
 						-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
 						-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
 						-- You should see "Hello!" appear. This line can then safely be removed.
@@ -303,8 +300,8 @@ return {
 				root_dir = function(fname)
 					local util = require("lspconfig.util")
 					return util.root_pattern("Project.toml")(fname)
-						or util.find_git_ancestor(fname)
-						or util.path.dirname(fname)
+						or vim.fs.dirname(vim.fs.find(".hg", { path = fname, upward = true })[1])
+						or vim.fs.dirname(fname)
 				end,
 				-- on_attach = function(client, bufnr)
 				-- 	on_attach(client, bufnr)
