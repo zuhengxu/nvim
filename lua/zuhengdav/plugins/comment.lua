@@ -14,6 +14,9 @@ return {
 		comment.setup({
 			-- for commenting tsx and jsx files
 			pre_hook = ts_context_commentstring.create_pre_hook(),
+
+			-- ignores empty lines
+			ignore = "^$",
 		})
 	end,
 }
