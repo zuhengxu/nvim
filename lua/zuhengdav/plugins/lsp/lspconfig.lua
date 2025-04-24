@@ -203,6 +203,7 @@ return {
 					},
 				},
 				pyright = { filetypes = { "python" } },
+				-- nextflow_ls = { filetypes = { "nextflow" } },
 
 				-- rust_analyzer = {},
 				-- tsserver = {},
@@ -288,7 +289,7 @@ return {
 							"using LanguageServer",
 							"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
 						)
-					elseif (vim.loop.fs_stat(julia) or {}).type == 'file' then
+					elseif (vim.loop.fs_stat(julia) or {}).type == "file" then
 						-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
 						-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
 						-- You should see "Hello!" appear. This line can then safely be removed.
