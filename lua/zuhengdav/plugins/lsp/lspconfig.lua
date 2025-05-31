@@ -12,7 +12,6 @@ return {
 			},
 		},
 	},
-	{ "Bilal2453/luvit-meta", lazy = true },
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -20,8 +19,8 @@ return {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			-- Mason must be loaded before its dependents so we need to set it up here.
 			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-			{ "williamboman/mason.nvim", opts = {} },
-			"williamboman/mason-lspconfig.nvim",
+			{ "mason-org/mason.nvim", opts = {} },
+			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
@@ -251,24 +250,34 @@ return {
 				-- rust_analyzer = {},
 				-- tsserver = {},
 				ltex = {
-					-- dictionary = {
-					-- 	["en-US"] = words, --followed https://miikanissi.com/blog/grammar-and-spell-checker-in-nvim/
-					-- },
 					filetypes = { "tex", "markdown" },
 					language = "en-US",
 				},
+                ltex_plus = {
+					filetypes = { "tex", "markdown" },
+					language = "en-US",
+                },
 
 				texlab = {
-					texlab = {
-						bibtexFormatter = "texlab",
-						chktex = {
-							onEdit = false,
-							onOpenAndSave = false,
-						},
-						latexFormatter = "latexindent",
-						latexindent = {
-							modifyLineBreaks = false,
-						},
+					bibtexFormatter = "texlab",
+					build = {
+						args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+						executable = "latexmk",
+						forwardSearchAfter = false,
+						onSave = false,
+					},
+					chktex = {
+						onEdit = false,
+						onOpenAndSave = false,
+					},
+					diagnosticsDelay = 300,
+					formatterLineLength = 80,
+					forwardSearch = {
+						args = {},
+					},
+					latexFormatter = "latexindent",
+					latexindent = {
+						modifyLineBreaks = false,
 					},
 				},
 
@@ -303,9 +312,10 @@ return {
 
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
-			local ensure_installed = vim.tbl_keys(servers or { "julials" })
+			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"julials", -- Julia language server
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

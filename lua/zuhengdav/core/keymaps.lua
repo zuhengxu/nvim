@@ -94,3 +94,22 @@ end, { desc = "Previous todo comment" })
 -- vim.keymap.set("n", "]t", function()
 -- 	require("todo-comments").jump_next({ keywords = { "ERROR", "WARNING" } })
 -- end, { desc = "Next error/warning todo comment" })
+--
+
+
+
+
+-- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.hl.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
