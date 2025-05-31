@@ -250,13 +250,17 @@ return {
 				-- rust_analyzer = {},
 				-- tsserver = {},
 				ltex = {
-					filetypes = { "tex", "markdown" },
+					filetypes = { "tex", "markdown", "bib"},
 					language = "en-US",
 				},
-                ltex_plus = {
-					filetypes = { "tex", "markdown" },
-					language = "en-US",
-                },
+                -- ltex_plus = {
+                --     settings = {
+                --         ltex = {
+                --             -- filetypes = { "tex", "markdown", "bib" },
+                --             language = "en-US",
+                --         },
+                --     },
+                -- },
 
 				texlab = {
 					bibtexFormatter = "texlab",
