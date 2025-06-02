@@ -250,17 +250,17 @@ return {
 				-- rust_analyzer = {},
 				-- tsserver = {},
 				ltex = {
-					filetypes = { "tex", "markdown", "bib"},
+					filetypes = { "tex", "markdown", "bib" },
 					language = "en-US",
 				},
-                -- ltex_plus = {
-                --     settings = {
-                --         ltex = {
-                --             -- filetypes = { "tex", "markdown", "bib" },
-                --             language = "en-US",
-                --         },
-                --     },
-                -- },
+				-- ltex_plus = {
+				--     settings = {
+				--         ltex = {
+				--             filetypes = { "tex", "markdown", "bib" },
+				--             language = "en-US",
+				--         },
+				--     },
+				-- },
 
 				texlab = {
 					bibtexFormatter = "texlab",
@@ -339,37 +339,79 @@ return {
 			})
 
 			-- manually configure julia language server
+			-- require("lspconfig")["julials"].setup({
+			-- on_new_config = function(new_config, _)
+			-- 	local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
+			-- 	local REVISE_LANGUAGESERVER = false
+			-- 	if REVISE_LANGUAGESERVER then
+			-- 		new_config.cmd[5] = (new_config.cmd[5]):gsub(
+			-- 			"using LanguageServer",
+			-- 			"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
+			-- 		)
+			-- 	elseif (vim.loop.fs_stat(julia) or {}).type == "file" then
+			-- 		-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
+			-- 		-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
+			-- 		-- You should see "Hello!" appear. This line can then safely be removed.
+			-- 		-- vim.notify("using julials!")
+			-- 		new_config.cmd[1] = julia
+			-- 	end
+			-- end,
+			-- -- This just adds dirname(fname) as a fallback (see nvim-lspconfig#1768).
+			-- root_dir = function(fname)
+			-- 	local util = require("lspconfig.util")
+			-- 	return util.root_pattern("Project.toml")(fname)
+			-- 		or vim.fs.dirname(vim.fs.find(".hg", { path = fname, upward = true })[1])
+			-- 		or vim.fs.dirname(fname)
+			-- end,
+			-- -- on_attach = function(client, bufnr)
+			-- -- 	on_attach(client, bufnr)
+			-- -- 	-- Disable automatic formatexpr since the LS.jl formatter isn't so nice.
+			-- -- 	vim.bo[bufnr].formatexpr = ""
+			-- -- end,
+			-- capabilities = capabilities,
+			-- filetypes = { "julia" },
+			-- })
+
 			require("lspconfig")["julials"].setup({
 				on_new_config = function(new_config, _)
-					local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
-					local REVISE_LANGUAGESERVER = false
-					if REVISE_LANGUAGESERVER then
-						new_config.cmd[5] = (new_config.cmd[5]):gsub(
-							"using LanguageServer",
-							"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
-						)
-					elseif (vim.loop.fs_stat(julia) or {}).type == "file" then
-						-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
-						-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
-						-- You should see "Hello!" appear. This line can then safely be removed.
-						-- vim.notify("using julials!")
-						new_config.cmd[1] = julia
-					end
+                    server_path = "~/.julia/environments/nvim-lspconfig"
+					cmd = {
+						"julia",
+						"--project="..server_path,
+						"--startup-file=no",
+						"--history-file=no",
+						"-e",
+						[[
+                          using Pkg
+                          Pkg.instantiate()
+                          using LanguageServer
+                          depot_path = get(ENV, "JULIA_DEPOT_PATH", "")
+                          project_path = let
+                              dirname(something(
+                                  ## 1. Finds an explicitly set project (JULIA_PROJECT)
+                                  Base.load_path_expand((
+                                      p = get(ENV, "JULIA_PROJECT", nothing);
+                                      p === nothing ? nothing : isempty(p) ? nothing : p
+                                  )),
+                                  ## 2. Look for a Project.toml file in the current working directory,
+                                  ##    or parent directories, with $HOME as an upper boundary
+                                  Base.current_project(),
+                                  ## 3. First entry in the load path
+                                  get(Base.load_path(), 1, nothing),
+                                  ## 4. Fallback to default global environment,
+                                  ##    this is more or less unreachable
+                                  Base.load_path_expand("@v#.#"),
+                              ))
+                          end
+                          @info "Running language server" VERSION pwd() project_path depot_path
+                          server = LanguageServer.LanguageServerInstance(stdin, stdout, project_path, depot_path)
+                          server.runlinter = true
+                          run(server)
+                    ]]
+					};
+					new_config.cmd = cmd
 				end,
-				-- This just adds dirname(fname) as a fallback (see nvim-lspconfig#1768).
-				root_dir = function(fname)
-					local util = require("lspconfig.util")
-					return util.root_pattern("Project.toml")(fname)
-						or vim.fs.dirname(vim.fs.find(".hg", { path = fname, upward = true })[1])
-						or vim.fs.dirname(fname)
-				end,
-				-- on_attach = function(client, bufnr)
-				-- 	on_attach(client, bufnr)
-				-- 	-- Disable automatic formatexpr since the LS.jl formatter isn't so nice.
-				-- 	vim.bo[bufnr].formatexpr = ""
-				-- end,
-				capabilities = capabilities,
-				filetypes = { "julia" },
+			    capabilities = capabilities,
 			})
 		end,
 	},
