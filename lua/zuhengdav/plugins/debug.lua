@@ -30,24 +30,24 @@ return {
 			)
 		end,
 	},
-	{
-		"mfussenegger/nvim-dap-python",
-		ft = "python",
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"rcarriga/nvim-dap-ui",
-		},
-		config = function(_, opts)
-			local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
-			require("dap-python").setup(path)
+	-- {
+	-- 	"mfussenegger/nvim-dap-python",
+	-- 	ft = "python",
+	-- 	dependencies = {
+	-- 		"mfussenegger/nvim-dap",
+	-- 		"rcarriga/nvim-dap-ui",
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+	-- 		require("dap-python").setup(path)
 
-			-- Define dap-python mappings here
-			vim.api.nvim_set_keymap(
-				"n",
-				"<leader>dpr", -- debug python run
-				'<cmd>lua require("dap-python").test_method()<CR>',
-				{ noremap = true, silent = true }
-			)
-		end,
-	},
+	-- 		-- Define dap-python mappings here
+	-- 		vim.api.nvim_set_keymap(
+	-- 			"n",
+	-- 			"<leader>dpr", -- debug python run
+	-- 			'<cmd>lua require("dap-python").test_method()<CR>',
+	-- 			{ noremap = true, silent = true }
+	-- 		)
+	-- 	end,
+	-- },
 }

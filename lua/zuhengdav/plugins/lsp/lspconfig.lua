@@ -372,7 +372,7 @@ return {
 			-- filetypes = { "julia" },
 			-- })
 
-			require("lspconfig")["julials"].setup({
+			vim.lsp.config('julials', {
 				on_new_config = function(new_config, _)
                     server_path = "~/.julia/environments/nvim-lspconfig"
 					cmd = {
