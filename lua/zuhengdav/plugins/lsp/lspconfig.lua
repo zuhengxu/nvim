@@ -175,6 +175,11 @@ return {
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 						end, "[T]oggle Inlay [H]ints")
 					end
+
+					-- Disable hover for ruff
+					if client and client.name == "ruff" then
+						client.server_capabilities.hoverProvider = false
+					end
 				end,
 			})
 
@@ -244,24 +249,13 @@ return {
 						references = true,
 					},
 				},
-				pyright = { filetypes = { "python" } },
 				-- nextflow_ls = { filetypes = { "nextflow" } },
-
 				-- rust_analyzer = {},
 				-- tsserver = {},
 				ltex = {
 					filetypes = { "tex", "markdown", "bib" },
 					language = "en-US",
 				},
-				-- ltex_plus = {
-				--     settings = {
-				--         ltex = {
-				--             filetypes = { "tex", "markdown", "bib" },
-				--             language = "en-US",
-				--         },
-				--     },
-				-- },
-
 				texlab = {
 					bibtexFormatter = "texlab",
 					build = {
@@ -304,6 +298,35 @@ return {
 						},
 					},
 				},
+
+				basedpyright = {
+					settings = {
+                        basedpyright = {
+                            disableOrganizeImports = true,
+                        },
+						python = {
+							analysis = {
+								typeCheckingMode = "off",
+                                ignore = {"*"},
+							},
+						},
+					},
+				},
+
+				ruff = {
+					settings = {
+						args = {
+							"--ignore",
+							"F821",
+							"--ignore",
+							"E402",
+							"--ignore",
+							"E722",
+							"--ignore",
+							"E712",
+						},
+					},
+				},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -339,38 +362,6 @@ return {
 			})
 
 			-- manually configure julia language server
-			-- require("lspconfig")["julials"].setup({
-			-- on_new_config = function(new_config, _)
-			-- 	local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
-			-- 	local REVISE_LANGUAGESERVER = false
-			-- 	if REVISE_LANGUAGESERVER then
-			-- 		new_config.cmd[5] = (new_config.cmd[5]):gsub(
-			-- 			"using LanguageServer",
-			-- 			"using Revise; using LanguageServer; if isdefined(LanguageServer, :USE_REVISE); LanguageServer.USE_REVISE[] = true; end"
-			-- 		)
-			-- 	elseif (vim.loop.fs_stat(julia) or {}).type == "file" then
-			-- 		-- NOTE: If you notice, there is a small line named vim.notify("Hello!").
-			-- 		-- This is to test that julials is engaged when accessing a Julia file - you can check that it is engaged by writing :messages in vim.
-			-- 		-- You should see "Hello!" appear. This line can then safely be removed.
-			-- 		-- vim.notify("using julials!")
-			-- 		new_config.cmd[1] = julia
-			-- 	end
-			-- end,
-			-- -- This just adds dirname(fname) as a fallback (see nvim-lspconfig#1768).
-			-- root_dir = function(fname)
-			-- 	local util = require("lspconfig.util")
-			-- 	return util.root_pattern("Project.toml")(fname)
-			-- 		or vim.fs.dirname(vim.fs.find(".hg", { path = fname, upward = true })[1])
-			-- 		or vim.fs.dirname(fname)
-			-- end,
-			-- -- on_attach = function(client, bufnr)
-			-- -- 	on_attach(client, bufnr)
-			-- -- 	-- Disable automatic formatexpr since the LS.jl formatter isn't so nice.
-			-- -- 	vim.bo[bufnr].formatexpr = ""
-			-- -- end,
-			-- capabilities = capabilities,
-			-- filetypes = { "julia" },
-			-- })
 
 			vim.lsp.config("jetls", {
 				cmd = {
@@ -380,7 +371,7 @@ return {
 				},
 				filetypes = { "julia" },
 			})
-            vim.lsp.enable("jetls")
+			vim.lsp.enable("jetls")
 		end,
 	},
 }
