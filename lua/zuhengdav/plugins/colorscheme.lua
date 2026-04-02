@@ -45,15 +45,22 @@ return {
 	-- 	end,
 	-- },
 
-	{
-		"catppuccin/nvim",
-		lazy = false,
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			vim.cmd.colorscheme("catppuccin")
-		end,
-	},
+		{
+			"catppuccin/nvim",
+			lazy = false,
+			name = "catppuccin",
+			priority = 1000,
+			config = function()
+				require("catppuccin").setup({
+					dim_inactive = {
+						enabled = false,
+						shade = "dark",
+						percentage = 0.15,
+					},
+				})
+				vim.cmd.colorscheme("catppuccin")
+			end,
+		},
 
 	-- 	-- {
 	-- 	-- 	"ellisonleao/gruvbox.nvim",

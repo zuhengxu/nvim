@@ -349,6 +349,9 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
 				automatic_installation = false,
+				automatic_enable = {
+					exclude = { "julials" },
+				},
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -362,6 +365,11 @@ return {
 			})
 
 			-- manually configure julia language server
+			-- Keeping the julials config here in comments for an easy rollback later.
+			-- vim.lsp.config("julials", {
+			-- 	filetypes = { "julia" },
+			-- })
+			-- vim.lsp.enable("julials")
 
 			vim.lsp.config("jetls", {
 				cmd = {
